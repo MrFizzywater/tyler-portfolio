@@ -14,7 +14,6 @@ const releases = await getCollection('music');
 </head>
 <body class="bg-stone-950 text-stone-100 min-h-screen font-sans selection:bg-stone-700">
 
-  <!-- Dark Header -->
   <header class="p-8 sm:p-12 flex justify-between items-center border-b border-stone-800">
     <div>
       <a href="/" class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500 hover:text-stone-300 transition-colors">
@@ -29,7 +28,6 @@ const releases = await getCollection('music');
     </a>
   </header>
 
-  <!-- Releases & Tracks Layout -->
   <main class="p-8 sm:p-12 max-w-6xl mx-auto">
     {releases.length === 0 ? (
       <div class="py-24 text-center">
@@ -38,10 +36,10 @@ const releases = await getCollection('music');
     ) : (
       <div class="divide-y divide-stone-900">
         {releases.map((track) => (
-          <article class="py-6 sm:py-8 flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
+          <article class="py-6 sm:py-8 flex flex-col md:flex-row justify-between md:items-center gap-6 group">
             <div class="flex items-center gap-6">
               {track.data.coverImage && (
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden rounded-xs border border-stone-800">
                   <img 
                     src={track.data.coverImage} 
                     alt={track.data.title}
@@ -64,17 +62,20 @@ const releases = await getCollection('music');
               </div>
             </div>
 
-            <div class="flex items-center gap-6 self-start sm:self-center">
-              <span class="text-xs font-mono text-stone-500">{track.data.year}</span>
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
+              <span class="text-xs font-mono text-stone-500 self-center hidden sm:inline">{track.data.year}</span>
+              
               {track.data.audioUrl && (
-                <a 
-                  href={track.data.audioUrl} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  class="text-xs uppercase tracking-widest border border-stone-800 px-4 py-2 hover:bg-stone-900 transition-colors"
-                >
-                  Listen &rarr;
-                </a>
+                <div class="w-full sm:w-72">
+                  <audio 
+                    controls 
+                    preload="none" 
+                    class="w-full h-8 brightness-90 contrast-125 accent-stone-300"
+                  >
+                    <source src={track.data.audioUrl} type="audio/mpeg" />
+                    Your browser does not support audio playback.
+                  </audio>
+                </div>
               )}
             </div>
           </article>
