@@ -1,7 +1,8 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-const visualCollection = defineCollection({
-  type: 'content',
+const visual = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/visual' }),
   schema: z.object({
     title: z.string(),
     category: z.enum(['Photography', 'Video', 'Directing']),
@@ -12,8 +13,8 @@ const visualCollection = defineCollection({
   }),
 });
 
-const musicCollection = defineCollection({
-  type: 'content',
+const music = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/music' }),
   schema: z.object({
     title: z.string(),
     project: z.string(),
@@ -26,7 +27,4 @@ const musicCollection = defineCollection({
   }),
 });
 
-export const collections = {
-  visual: visualCollection,
-  music: musicCollection,
-};
+export const collections = { visual, music };
