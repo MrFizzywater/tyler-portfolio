@@ -1,10 +1,10 @@
 ---
-title: "Demo Cut"
-project: "Kronis"
-role: "Guitar"
+title: Demo Cut
+project: Kronis
+role: Guitar
+releaseType: Single
 year: 2026
-coverImage: "/uploads/placeholder-audio.jpg"
-releaseType: "Single"
+coverImage: /uploads/dscf1889.jpg
 featured: true
 ---
 
