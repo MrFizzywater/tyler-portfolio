@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 
+// Set to true if Tyler has a logo placed at /public/logo.svg or /public/logo.png
 const hasImageLogo = false;
 const logoPath = '/logo.svg';
 ---
@@ -14,6 +15,7 @@ const logoPath = '/logo.svg';
 </head>
 <body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden font-sans relative selection:bg-stone-300">
 
+  <!-- Logo Anchor (Desktop Center) -->
   <div class="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 pointer-events-none items-center justify-center">
     {hasImageLogo ? (
       <img src={logoPath} alt="Tyler Lacroix" class="h-10 w-auto object-contain filter invert mix-blend-difference" />
@@ -24,6 +26,7 @@ const logoPath = '/logo.svg';
     )}
   </div>
 
+  <!-- VISUAL SIDE (LIGHT) -->
   <a 
     href="/visual/" 
     class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-[#faf9f6] text-stone-900 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] border-b md:border-b-0 md:border-r border-stone-200 cursor-pointer z-10 block"
@@ -48,6 +51,7 @@ const logoPath = '/logo.svg';
     </div>
   </a>
 
+  <!-- SOUND SIDE (DARK) -->
   <a 
     href="/music/" 
     class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] cursor-pointer z-10 block"
