@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+
+// Set to true if Tyler has an image logo in /public/logo.svg or /public/logo.png
+const hasImageLogo = false;
+const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -9,13 +13,27 @@ import '../styles/global.css';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Tyler Lacroix — Visual & Sound</title>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden font-sans">
-  
+<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden font-sans relative selection:bg-stone-300">
+
+  <!-- Optional Center Brand Anchor (Desktop) -->
+  <div class="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 pointer-events-none items-center justify-center">
+    {hasImageLogo ? (
+      <img src={logoPath} alt="Tyler Lacroix" class="h-10 w-auto object-contain filter invert mix-blend-difference" />
+    ) : (
+      <span class="text-xs uppercase tracking-[0.4em] font-light mix-blend-difference text-white">
+        TL
+      </span>
+    )}
+  </div>
+
   <!-- VISUAL SIDE (LIGHT) -->
-  <a href="/visual" class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-100 text-stone-900 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.2] border-b md:border-b-0 md:border-r border-stone-200">
-    <div class="flex justify-between items-center">
+  <a 
+    href="/visual/" 
+    class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-[#faf9f6] text-stone-900 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] border-b md:border-b-0 md:border-r border-stone-200 cursor-pointer z-10 block"
+  >
+    <div class="flex justify-between items-center w-full">
       <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-400">01 / Visual</span>
-      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 transition-transform">Explore &rarr;</span>
+      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 group-hover:text-stone-900 transition-all">Explore &rarr;</span>
     </div>
     
     <div class="my-auto py-12">
@@ -27,16 +45,20 @@ import '../styles/global.css';
       </p>
     </div>
 
-    <div class="text-[11px] uppercase tracking-widest text-stone-400">
-      Portfolio &amp; Projects
+    <div class="flex justify-between items-center text-[11px] uppercase tracking-widest text-stone-400">
+      <span>Portfolio &amp; Projects</span>
+      <span class="text-stone-300 font-mono text-xs">Light</span>
     </div>
   </a>
 
   <!-- SOUND SIDE (DARK) -->
-  <a href="/music" class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.2]">
-    <div class="flex justify-between items-center">
+  <a 
+    href="/music/" 
+    class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] cursor-pointer z-10 block"
+  >
+    <div class="flex justify-between items-center w-full">
       <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500">02 / Auditory</span>
-      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 transition-transform">Listen &rarr;</span>
+      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 group-hover:text-white transition-all">Listen &rarr;</span>
     </div>
     
     <div class="my-auto py-12">
@@ -48,8 +70,9 @@ import '../styles/global.css';
       </p>
     </div>
 
-    <div class="text-[11px] uppercase tracking-widest text-stone-500">
-      Releases &amp; Sessions
+    <div class="flex justify-between items-center text-[11px] uppercase tracking-widest text-stone-500">
+      <span>Releases &amp; Sessions</span>
+      <span class="text-stone-700 font-mono text-xs">Dark</span>
     </div>
   </a>
 
