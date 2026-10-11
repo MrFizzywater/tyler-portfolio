@@ -1,0 +1,39 @@
+backend:
+  name: github
+  repo: MrFizzywater/tyler-portfolio
+  branch: main
+  base_url: https://auth.fizzywater.ca
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "visual"
+    label: "Visual Works (Photo/Video)"
+    folder: "src/content/visual"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Category", name: "category", widget: "select", options: ["Photography", "Video", "Directing"], default: "Photography" }
+      - { label: "Year", name: "year", widget: "number", default: 2026 }
+      - { label: "Cover Image", name: "coverImage", widget: "image" }
+      - { label: "Client / Project", name: "client", widget: "string", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Description / Notes", name: "body", widget: "markdown" }
+
+  - name: "music"
+    label: "Music & Audio Releases"
+    folder: "src/content/music"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Track / Release Title", name: "title", widget: "string" }
+      - { label: "Project / Band", name: "project", widget: "string", default: "Kronis" }
+      - { label: "Role", name: "role", widget: "string", default: "Guitar" }
+      - { label: "Release Type", name: "releaseType", widget: "select", options: ["Single", "EP", "Album", "Demo"], default: "Single" }
+      - { label: "Year", name: "year", widget: "number", default: 2026 }
+      - { label: "Cover Artwork", name: "coverImage", widget: "image" }
+      - { label: "Audio URL / Stream Link", name: "audioUrl", widget: "string", required: false }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Liner Notes / Story", name: "body", widget: "markdown" }

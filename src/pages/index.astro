@@ -1,16 +1,57 @@
 ---
+import '../styles/global.css';
 ---
 
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tyler Lacroix — Visual & Sound</title>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden font-sans">
+  
+  <!-- VISUAL SIDE (LIGHT) -->
+  <a href="/visual" class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-100 text-stone-900 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.2] border-b md:border-b-0 md:border-r border-stone-200">
+    <div class="flex justify-between items-center">
+      <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-400">01 / Visual</span>
+      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 transition-transform">Explore &rarr;</span>
+    </div>
+    
+    <div class="my-auto py-12">
+      <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-stone-950">
+        Photography<br />&amp; Video
+      </h2>
+      <p class="mt-4 text-sm text-stone-500 max-w-sm font-light leading-relaxed">
+        Frame composition, lighting, and movement. Direction and visual storytelling.
+      </p>
+    </div>
+
+    <div class="text-[11px] uppercase tracking-widest text-stone-400">
+      Portfolio &amp; Projects
+    </div>
+  </a>
+
+  <!-- SOUND SIDE (DARK) -->
+  <a href="/music" class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.2]">
+    <div class="flex justify-between items-center">
+      <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500">02 / Auditory</span>
+      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 transition-transform">Listen &rarr;</span>
+    </div>
+    
+    <div class="my-auto py-12">
+      <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-white">
+        Guitar<br />&amp; Sound
+      </h2>
+      <p class="mt-4 text-sm text-stone-400 max-w-sm font-light leading-relaxed">
+        Riffs, tracking, and tone architecture. Heavy groove, dynamics, and atmospheric textures.
+      </p>
+    </div>
+
+    <div class="text-[11px] uppercase tracking-widest text-stone-500">
+      Releases &amp; Sessions
+    </div>
+  </a>
+
+</body>
 </html>
