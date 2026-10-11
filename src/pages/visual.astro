@@ -1,8 +1,20 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import '../styles/global.css';
 
 const works = await getCollection('visual');
+
+// Render markdown bodies so descriptions show up
+const renderedWorks = await Promise.all(
+  works.map(async (item) => {
+    const { Content } = await render(item);
+    return { ...item, Content };
+  })
+);
+
+// Toggle to true once an image logo is placed in /public/logo.svg or /public/logo.png
+const hasImageLogo = false;
+const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -14,51 +26,81 @@ const works = await getCollection('visual');
 </head>
 <body class="bg-[#faf9f6] text-stone-900 min-h-screen font-sans selection:bg-stone-300">
 
-  <!-- Minimal Header -->
-  <header class="p-8 sm:p-12 flex justify-between items-center border-b border-stone-200">
-    <div>
-      <a href="/" class="text-xs uppercase tracking-[0.3em] font-medium text-stone-400 hover:text-stone-950 transition-colors">
-        &larr; Overview
+  <!-- Navigation / Brand Bar -->
+  <header class="p-6 sm:p-10 border-b border-stone-200 flex justify-between items-center sticky top-0 bg-[#faf9f6]/90 backdrop-blur-md z-20">
+    <div class="flex items-center gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        {hasImageLogo ? (
+          <img src={logoPath} alt="Tyler Lacroix" class="h-7 w-auto object-contain" />
+        ) : (
+          <span class="text-sm font-semibold tracking-[0.25em] uppercase text-stone-950 group-hover:text-stone-600 transition-colors">
+            TL
+          </span>
+        )}
       </a>
-      <h1 class="text-2xl sm:text-3xl font-light tracking-tight text-stone-950 mt-2">
-        Visual Work
-      </h1>
+      <span class="text-stone-300 font-light">/</span>
+      <span class="text-xs uppercase tracking-[0.25em] text-stone-500 font-medium">Visual</span>
     </div>
-    <a href="/music/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors">
-      Switch to Audio &rarr;
-    </a>
+
+    <div class="flex items-center gap-6">
+      <a href="/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
+        Overview
+      </a>
+      <a href="/music/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
+        Audio &rarr;
+      </a>
+    </div>
   </header>
 
-  <!-- Gallery Grid -->
-  <main class="p-8 sm:p-12 max-w-7xl mx-auto">
-    {works.length === 0 ? (
+  <!-- Optional Intro Text Block -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-10 pt-12 pb-6">
+    <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-stone-950 mb-4">
+      Selected Visual Works
+    </h1>
+    <p class="text-stone-600 font-light max-w-2xl text-base sm:text-lg leading-relaxed">
+      Direction, editorial shoots, and camera composition. Exploring contrast, depth, and deliberate stillness.
+    </p>
+  </section>
+
+  <!-- Works Grid -->
+  <main class="max-w-7xl mx-auto px-6 sm:px-10 py-8">
+    {renderedWorks.length === 0 ? (
       <div class="py-24 text-center">
-        <p class="text-stone-400 font-light text-sm uppercase tracking-widest">No entries published yet</p>
+        <p class="text-stone-400 font-light text-sm uppercase tracking-widest">No visual entries published yet</p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {works.map((item) => (
-          <article class="group flex flex-col">
-            <div class="aspect-4/3 bg-stone-200 overflow-hidden relative mb-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+        {renderedWorks.map(({ data, Content }) => (
+          <article class="group flex flex-col bg-white p-4 border border-stone-200/80 rounded-xs shadow-xs hover:shadow-md transition-shadow">
+            <div class="aspect-4/3 bg-stone-100 overflow-hidden relative mb-4">
               <img 
-                src={item.data.coverImage} 
-                alt={item.data.title}
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                src={data.coverImage} 
+                alt={data.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
                 loading="lazy"
                 onerror="this.style.display='none'"
               />
-              <div class="absolute inset-0 bg-stone-950/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </div>
-            <div class="flex justify-between items-baseline text-xs text-stone-400 uppercase tracking-wider mb-1">
-              <span>{item.data.category}</span>
-              <span>{item.data.year}</span>
+            
+            <div class="flex justify-between items-baseline text-xs text-stone-400 uppercase tracking-wider mb-1.5">
+              <span>{data.category}</span>
+              <span>{data.year}</span>
             </div>
-            <h2 class="text-lg font-light text-stone-900 group-hover:text-stone-600 transition-colors">
-              {item.data.title}
+
+            <h2 class="text-xl font-normal text-stone-950 mb-1">
+              {data.title}
             </h2>
-            {item.data.client && (
-              <p class="text-xs text-stone-500 font-light mt-0.5">{item.data.client}</p>
+
+            {data.client && (
+              <p class="text-xs uppercase tracking-wider text-stone-400 font-mono mb-3">
+                Client: {data.client}
+              </p>
             )}
+
+            <!-- Post Description / Markdown Body -->
+            <div class="mt-2 text-sm text-stone-600 font-light leading-relaxed prose prose-stone prose-sm">
+              <Content />
+            </div>
           </article>
         ))}
       </div>

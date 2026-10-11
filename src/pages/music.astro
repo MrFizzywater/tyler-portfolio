@@ -1,8 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 import '../styles/global.css';
 
 const releases = await getCollection('music');
+
+const renderedReleases = await Promise.all(
+  releases.map(async (item) => {
+    const { Content } = await render(item);
+    return { ...item, Content };
+  })
+);
+
+const hasImageLogo = false;
+const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -14,69 +24,100 @@ const releases = await getCollection('music');
 </head>
 <body class="bg-stone-950 text-stone-100 min-h-screen font-sans selection:bg-stone-700">
 
-  <header class="p-8 sm:p-12 flex justify-between items-center border-b border-stone-800">
-    <div>
-      <a href="/" class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500 hover:text-stone-300 transition-colors">
-        &larr; Overview
+  <!-- Navigation / Brand Bar -->
+  <header class="p-6 sm:p-10 border-b border-stone-900 flex justify-between items-center sticky top-0 bg-stone-950/90 backdrop-blur-md z-20">
+    <div class="flex items-center gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        {hasImageLogo ? (
+          <img src={logoPath} alt="Tyler Lacroix" class="h-7 w-auto object-contain filter invert" />
+        ) : (
+          <span class="text-sm font-semibold tracking-[0.25em] uppercase text-stone-200 group-hover:text-stone-400 transition-colors">
+            TL
+          </span>
+        )}
       </a>
-      <h1 class="text-2xl sm:text-3xl font-light tracking-tight text-white mt-2">
-        Audio & Guitar
-      </h1>
+      <span class="text-stone-700 font-light">/</span>
+      <span class="text-xs uppercase tracking-[0.25em] text-stone-400 font-medium">Audio</span>
     </div>
-    <a href="/visual/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-white transition-colors">
-      Switch to Visual &rarr;
-    </a>
+
+    <div class="flex items-center gap-6">
+      <a href="/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-200 transition-colors">
+        Overview
+      </a>
+      <a href="/visual/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-200 transition-colors">
+        Visual &rarr;
+      </a>
+    </div>
   </header>
 
-  <main class="p-8 sm:p-12 max-w-6xl mx-auto">
-    {releases.length === 0 ? (
+  <!-- Intro Block At Top -->
+  <section class="max-w-5xl mx-auto px-6 sm:px-10 pt-12 pb-8">
+    <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-white mb-4">
+      Guitar &amp; Sonic Works
+    </h1>
+    <p class="text-stone-400 font-light max-w-2xl text-base sm:text-lg leading-relaxed">
+      Tone design, live takes, rhythm architecture, and heavy groove sessions. Exploring dynamic shifts from atmospheric ambient passages to drop-tuned weight.
+    </p>
+  </section>
+
+  <!-- Track Listing & Player Layout -->
+  <main class="max-w-5xl mx-auto px-6 sm:px-10 pb-16">
+    {renderedReleases.length === 0 ? (
       <div class="py-24 text-center">
-        <p class="text-stone-600 font-light text-sm uppercase tracking-widest">No releases published yet</p>
+        <p class="text-stone-600 font-light text-sm uppercase tracking-widest">No audio entries published yet</p>
       </div>
     ) : (
       <div class="divide-y divide-stone-900">
-        {releases.map((track) => (
-          <article class="py-6 sm:py-8 flex flex-col md:flex-row justify-between md:items-center gap-6 group">
-            <div class="flex items-center gap-6">
-              {track.data.coverImage && (
-                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden rounded-xs border border-stone-800">
-                  <img 
-                    src={track.data.coverImage} 
-                    alt={track.data.title}
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                    onerror="this.style.display='none'"
-                  />
+        {renderedReleases.map(({ data, Content }) => (
+          <article class="py-8 flex flex-col gap-5 group">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div class="flex items-center gap-5">
+                {data.coverImage && (
+                  <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden border border-stone-800">
+                    <img 
+                      src={data.coverImage} 
+                      alt={data.title}
+                      class="w-full h-full object-cover"
+                      loading="lazy"
+                      onerror="this.style.display='none'"
+                    />
+                  </div>
+                )}
+                <div>
+                  <div class="flex items-center gap-2 text-xs uppercase tracking-widest text-stone-500 mb-1">
+                    <span>{data.project}</span>
+                    <span>&bull;</span>
+                    <span>{data.releaseType}</span>
+                    <span>&bull;</span>
+                    <span class="font-mono">{data.year}</span>
+                  </div>
+                  <h2 class="text-2xl font-light text-white group-hover:text-stone-300 transition-colors">
+                    {data.title}
+                  </h2>
+                  <span class="text-xs text-stone-400 font-light block mt-0.5">
+                    Role: {data.role}
+                  </span>
                 </div>
-              )}
-              <div>
-                <span class="text-xs uppercase tracking-widest text-stone-500 block mb-1">
-                  {track.data.project} &bull; {track.data.releaseType}
-                </span>
-                <h2 class="text-xl font-light text-white group-hover:text-stone-300 transition-colors">
-                  {track.data.title}
-                </h2>
-                <span class="text-xs text-stone-400 font-light mt-0.5 block">
-                  Role: {track.data.role}
-                </span>
               </div>
-            </div>
 
-            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 w-full md:w-auto">
-              <span class="text-xs font-mono text-stone-500 self-center hidden sm:inline">{track.data.year}</span>
-              
-              {track.data.audioUrl && (
-                <div class="w-full sm:w-72">
+              <!-- Inline Audio Player -->
+              {data.audioUrl && (
+                <div class="w-full sm:w-72 mt-2 sm:mt-0">
                   <audio 
                     controls 
                     preload="none" 
-                    class="w-full h-8 brightness-90 contrast-125 accent-stone-300"
+                    class="w-full h-8 brightness-90 contrast-125 accent-stone-400"
                   >
-                    <source src={track.data.audioUrl} type="audio/mpeg" />
+                    <source src={data.audioUrl} type="audio/mpeg" />
                     Your browser does not support audio playback.
                   </audio>
                 </div>
               )}
+            </div>
+
+            <!-- Track Description / Markdown Notes -->
+            <div class="text-sm text-stone-400 font-light leading-relaxed max-w-2xl pl-0 sm:pl-25">
+              <Content />
             </div>
           </article>
         ))}
