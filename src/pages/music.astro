@@ -1,0 +1,87 @@
+---
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+
+const releases = await getCollection('music');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tyler Lacroix — Guitar & Audio</title>
+</head>
+<body class="bg-stone-950 text-stone-100 min-h-screen font-sans selection:bg-stone-700">
+
+  <!-- Dark Header -->
+  <header class="p-8 sm:p-12 flex justify-between items-center border-b border-stone-800">
+    <div>
+      <a href="/" class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500 hover:text-stone-300 transition-colors">
+        &larr; Overview
+      </a>
+      <h1 class="text-2xl sm:text-3xl font-light tracking-tight text-white mt-2">
+        Audio & Guitar
+      </h1>
+    </div>
+    <a href="/visual/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-white transition-colors">
+      Switch to Visual &rarr;
+    </a>
+  </header>
+
+  <!-- Releases & Tracks Layout -->
+  <main class="p-8 sm:p-12 max-w-6xl mx-auto">
+    {releases.length === 0 ? (
+      <div class="py-24 text-center">
+        <p class="text-stone-600 font-light text-sm uppercase tracking-widest">No releases published yet</p>
+      </div>
+    ) : (
+      <div class="divide-y divide-stone-900">
+        {releases.map((track) => (
+          <article class="py-6 sm:py-8 flex flex-col sm:flex-row justify-between sm:items-center gap-4 group">
+            <div class="flex items-center gap-6">
+              {track.data.coverImage && (
+                <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden">
+                  <img 
+                    src={track.data.coverImage} 
+                    alt={track.data.title}
+                    class="w-full h-full object-cover"
+                    loading="lazy"
+                    onerror="this.style.display='none'"
+                  />
+                </div>
+              )}
+              <div>
+                <span class="text-xs uppercase tracking-widest text-stone-500 block mb-1">
+                  {track.data.project} &bull; {track.data.releaseType}
+                </span>
+                <h2 class="text-xl font-light text-white group-hover:text-stone-300 transition-colors">
+                  {track.data.title}
+                </h2>
+                <span class="text-xs text-stone-400 font-light mt-0.5 block">
+                  Role: {track.data.role}
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-6 self-start sm:self-center">
+              <span class="text-xs font-mono text-stone-500">{track.data.year}</span>
+              {track.data.audioUrl && (
+                <a 
+                  href={track.data.audioUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  class="text-xs uppercase tracking-widest border border-stone-800 px-4 py-2 hover:bg-stone-900 transition-colors"
+                >
+                  Listen &rarr;
+                </a>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+
+</body>
+</html>

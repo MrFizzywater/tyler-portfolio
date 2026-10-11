@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import '../styles/global.css';
+
+const works = await getCollection('visual');
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tyler Lacroix — Visual & Photography</title>
+</head>
+<body class="bg-[#faf9f6] text-stone-900 min-h-screen font-sans selection:bg-stone-300">
+
+  <!-- Minimal Header -->
+  <header class="p-8 sm:p-12 flex justify-between items-center border-b border-stone-200">
+    <div>
+      <a href="/" class="text-xs uppercase tracking-[0.3em] font-medium text-stone-400 hover:text-stone-950 transition-colors">
+        &larr; Overview
+      </a>
+      <h1 class="text-2xl sm:text-3xl font-light tracking-tight text-stone-950 mt-2">
+        Visual Work
+      </h1>
+    </div>
+    <a href="/music/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors">
+      Switch to Audio &rarr;
+    </a>
+  </header>
+
+  <!-- Gallery Grid -->
+  <main class="p-8 sm:p-12 max-w-7xl mx-auto">
+    {works.length === 0 ? (
+      <div class="py-24 text-center">
+        <p class="text-stone-400 font-light text-sm uppercase tracking-widest">No entries published yet</p>
+      </div>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {works.map((item) => (
+          <article class="group flex flex-col">
+            <div class="aspect-4/3 bg-stone-200 overflow-hidden relative mb-4">
+              <img 
+                src={item.data.coverImage} 
+                alt={item.data.title}
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                loading="lazy"
+                onerror="this.style.display='none'"
+              />
+              <div class="absolute inset-0 bg-stone-950/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </div>
+            <div class="flex justify-between items-baseline text-xs text-stone-400 uppercase tracking-wider mb-1">
+              <span>{item.data.category}</span>
+              <span>{item.data.year}</span>
+            </div>
+            <h2 class="text-lg font-light text-stone-900 group-hover:text-stone-600 transition-colors">
+              {item.data.title}
+            </h2>
+            {item.data.client && (
+              <p class="text-xs text-stone-500 font-light mt-0.5">{item.data.client}</p>
+            )}
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+
+</body>
+</html>
