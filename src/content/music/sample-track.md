@@ -1,6 +1,6 @@
 ---
 title: Demo Cut
-project: Kronis
+project: ASPIRA
 role: Guitar
 releaseType: Single
 year: 2026
