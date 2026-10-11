@@ -1,9 +1,9 @@
 ---
-title: "Studio Session 01"
-category: "Photography"
+title: Studio Session 01
+category: Photography
 year: 2026
-coverImage: "/uploads/placeholder-visual.jpg"
-client: "Personal Project"
+coverImage: /uploads/dscf1896.jpg
+client: Personal Project
 featured: true
 ---
 
