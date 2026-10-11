@@ -2,7 +2,7 @@ backend:
   name: github
   repo: MrFizzywater/tyler-portfolio
   branch: main
-  base_url: https://auth.erikalacroix.ca
+  base_url: https://auth.erikalacroix.com
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
