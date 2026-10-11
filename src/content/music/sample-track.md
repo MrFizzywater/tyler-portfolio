@@ -1,12 +1,11 @@
 ---
-title: Demo Cut
-project: ASPIRA
-role: Guitar
-releaseType: Single
+title: "Demo Cut"
+project: "Kronis"
+role: "Guitar"
 year: 2026
-coverImage: /uploads/dscf1889.jpg
-audioUrl: https://media.tylerlacroix.ca/Songs/Chuggy.m4a
+coverImage: "/uploads/placeholder-audio.jpg"
+releaseType: "Single"
 featured: true
 ---
 
-Raw rhythm tracking and riff exploration recorded in 2026.
+Rhythm tracking and riff exploration.
