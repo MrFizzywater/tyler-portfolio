@@ -5,7 +5,7 @@ role: All instruments
 releaseType: Riff / Demo
 year: 2026
 coverImage: /uploads/hpim0743.jpg
-audioUrl: https://soundcloud.com/aspira-60282343/prog-thing-demo-vers-1/s-3pXueFTieLS
+audioUrl: https://media.tylerlacroix.ca/Songs/Prog%20thing%20demo%20vers%201.m4a
 featured: false
 ---
 Just a little prog demo.
