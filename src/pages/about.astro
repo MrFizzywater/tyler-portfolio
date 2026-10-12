@@ -1,0 +1,111 @@
+---
+import aboutData from '../content/settings/about.json';
+import generalSettings from '../content/settings/general.json';
+import '../styles/global.css';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Tyler Lacroix</title>
+</head>
+<body class="bg-[#121212] text-stone-200 min-h-screen font-sans selection:bg-stone-700 flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="p-6 sm:p-10 border-b border-stone-800 flex justify-between items-center">
+    <div class="flex items-center gap-4">
+      <a href="/" class="flex items-center gap-3 group">
+        {generalSettings.logo ? (
+          <img src={generalSettings.logo} alt="Tyler Lacroix" class="h-7 w-auto object-contain filter invert" />
+        ) : (
+          <span class="text-sm font-semibold tracking-[0.25em] uppercase text-stone-200 group-hover:text-stone-400 transition-colors">
+            {generalSettings.monogram || 'TL'}
+          </span>
+        )}
+      </a>
+      <span class="text-stone-700 font-light">/</span>
+      <span class="text-xs uppercase tracking-[0.25em] text-stone-400 font-medium">About</span>
+    </div>
+
+    <div class="flex items-center gap-6 text-xs uppercase tracking-widest text-stone-400">
+      <a href="/visual/" class="hover:text-white transition-colors">Visual</a>
+      <a href="/music/" class="hover:text-white transition-colors">Audio</a>
+    </div>
+  </header>
+
+  <!-- About & Contact Content -->
+  <main class="max-w-4xl mx-auto px-6 sm:px-10 py-16 sm:py-24 w-full">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+      
+      <!-- Bio / Info Column -->
+      <div class="md:col-span-2">
+        <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500 block mb-2">
+          {aboutData.tagline}
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-light tracking-tight text-white mb-8">
+          {aboutData.headline}
+        </h1>
+        
+        <div class="text-stone-300 font-light text-base sm:text-lg leading-relaxed whitespace-pre-line space-y-4 mb-12">
+          {aboutData.bio}
+        </div>
+
+        <!-- Contact Actions -->
+        <div class="pt-8 border-t border-stone-800 flex flex-col sm:flex-row items-start sm:items-center gap-6">
+          <a 
+            href={`mailto:${aboutData.email}`} 
+            class="text-xs uppercase tracking-widest bg-stone-100 text-stone-950 px-6 py-3 font-medium hover:bg-stone-300 transition-colors"
+          >
+            Get In Touch &rarr;
+          </a>
+          <span class="text-xs font-mono text-stone-500">{aboutData.email}</span>
+        </div>
+      </div>
+
+      <!-- Links / Photo Column -->
+      <div class="border-t md:border-t-0 md:border-l border-stone-800 pt-8 md:pt-0 md:pl-8 space-y-6">
+        {aboutData.photo && (
+          <div class="aspect-square bg-stone-900 overflow-hidden mb-6">
+            <img src={aboutData.photo} alt={aboutData.headline} class="w-full h-full object-cover" />
+          </div>
+        )}
+
+        <div>
+          <span class="text-xs uppercase tracking-widest text-stone-500 block mb-3">Links</span>
+          <ul class="space-y-2 text-sm text-stone-400">
+            {aboutData.instagram && (
+              <li>
+                <a href={aboutData.instagram} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                  Instagram &rarr;
+                </a>
+              </li>
+            )}
+            {aboutData.youtube && (
+              <li>
+                <a href={aboutData.youtube} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                  YouTube &rarr;
+                </a>
+              </li>
+            )}
+            {aboutData.bandcamp && (
+              <li>
+                <a href={aboutData.bandcamp} target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">
+                  Bandcamp / Music &rarr;
+                </a>
+              </li>
+            )}
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="p-6 sm:p-10 border-t border-stone-900 text-center text-xs uppercase tracking-widest text-stone-600">
+    &copy; {new Date().getFullYear()} Tyler Lacroix
+  </footer>
+
+</body>
+</html>

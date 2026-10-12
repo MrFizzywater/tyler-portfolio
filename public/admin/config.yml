@@ -3,27 +3,31 @@ backend:
   repo: MrFizzywater/tyler-portfolio
   branch: main
   base_url: https://auth.erikalacroix.com
+  auth_endpoint: auth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
+  # 1. Visual Works
   - name: "visual"
-    label: "Visual Works (Photo/Video)"
+    label: "Visual Works"
     folder: "src/content/visual"
     create: true
     slug: "{{slug}}"
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Category", name: "category", widget: "select", options: ["Photography", "Video", "Directing"], default: "Photography" }
-      - { label: "Year", name: "year", widget: "number", default: 2026 }
-      - { label: "Cover Image", name: "coverImage", widget: "image" }
-      - { label: "Client / Project", name: "client", widget: "string", required: false }
+      - { label: "Category", name: "category", widget: "select", options: ["Photography", "Video", "Direction", "Design"], default: "Photography" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
+      - { label: "Cover Media", name: "coverImage", widget: "image" }
+      - { label: "Video URL (Optional embed/mp4)", name: "videoUrl", widget: "string", required: false }
+      - { label: "Client", name: "client", widget: "string", required: false }
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
-      - { label: "Description / Notes", name: "body", widget: "markdown" }
+      - { label: "Body / Details", name: "body", widget: "markdown" }
 
+  # 2. Audio Works
   - name: "music"
-    label: "Music & Audio Releases"
+    label: "Audio & Music"
     folder: "src/content/music"
     create: true
     slug: "{{slug}}"
@@ -31,9 +35,37 @@ collections:
       - { label: "Track / Release Title", name: "title", widget: "string" }
       - { label: "Project / Band", name: "project", widget: "string", default: "Kronis" }
       - { label: "Role", name: "role", widget: "string", default: "Guitar" }
-      - { label: "Release Type", name: "releaseType", widget: "select", options: ["Single", "EP", "Album", "Demo"], default: "Single" }
-      - { label: "Year", name: "year", widget: "number", default: 2026 }
-      - { label: "Cover Artwork", name: "coverImage", widget: "image" }
-      - { label: "Audio URL / Stream Link", name: "audioUrl", widget: "string", required: false }
+      - { label: "Release Type", name: "releaseType", widget: "select", options: ["Single", "EP", "Album", "Riff / Demo", "Session"], default: "Single" }
+      - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
+      - { label: "Artwork", name: "coverImage", widget: "image" }
+      - { label: "Audio File or URL", name: "audioUrl", widget: "file", required: false }
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
-      - { label: "Liner Notes / Story", name: "body", widget: "markdown" }
+      - { label: "Liner Notes / Description", name: "body", widget: "markdown" }
+
+  # 3. Pages & Global Settings (CMS-managed text & logo)
+  - name: "settings"
+    label: "Site Settings & Content"
+    files:
+      - name: "general"
+        label: "General & Branding"
+        file: "src/content/settings/general.json"
+        fields:
+          - { label: "Site Monogram (Fallback)", name: "monogram", widget: "string", default: "TL" }
+          - { label: "Logo Image", name: "logo", widget: "image", required: false }
+          - { label: "Visual Page Headline", name: "visualHeadline", widget: "string", default: "Selected Visual Works" }
+          - { label: "Visual Page Subtext", name: "visualSubtext", widget: "text" }
+          - { label: "Audio Page Headline", name: "audioHeadline", widget: "string", default: "Guitar & Sonic Works" }
+          - { label: "Audio Page Subtext", name: "audioSubtext", widget: "text" }
+
+      - name: "about"
+        label: "About & Contact Page"
+        file: "src/content/settings/about.json"
+        fields:
+          - { label: "Name / Heading", name: "headline", widget: "string", default: "Tyler Lacroix" }
+          - { label: "Tagline", name: "tagline", widget: "string", default: "Visual Artist & Guitarist" }
+          - { label: "Profile Photo", name: "photo", widget: "image", required: false }
+          - { label: "Bio / About Text", name: "bio", widget: "markdown" }
+          - { label: "Email Address", name: "email", widget: "string" }
+          - { label: "Instagram Handle or URL", name: "instagram", widget: "string", required: false }
+          - { label: "YouTube / Video URL", name: "youtube", widget: "string", required: false }
+          - { label: "Bandcamp / Spotify URL", name: "bandcamp", widget: "string", required: false }

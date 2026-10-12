@@ -1,20 +1,16 @@
 ---
 import { getCollection, render } from 'astro:content';
+import generalSettings from '../content/settings/general.json';
 import '../styles/global.css';
 
 const works = await getCollection('visual');
 
-// Render markdown bodies so descriptions show up
 const renderedWorks = await Promise.all(
   works.map(async (item) => {
     const { Content } = await render(item);
     return { ...item, Content };
   })
 );
-
-// Toggle to true once an image logo is placed in /public/logo.svg or /public/logo.png
-const hasImageLogo = false;
-const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -26,15 +22,15 @@ const logoPath = '/logo.svg';
 </head>
 <body class="bg-[#faf9f6] text-stone-900 min-h-screen font-sans selection:bg-stone-300">
 
-  <!-- Navigation / Brand Bar -->
-  <header class="p-6 sm:p-10 border-b border-stone-200 flex justify-between items-center sticky top-0 bg-[#faf9f6]/90 backdrop-blur-md z-20">
+  <!-- Header -->
+  <header class="p-6 sm:p-10 border-b border-stone-200 flex justify-between items-center sticky top-0 bg-[#faf9f6]/95 backdrop-blur-md z-20">
     <div class="flex items-center gap-4">
       <a href="/" class="flex items-center gap-3 group">
-        {hasImageLogo ? (
-          <img src={logoPath} alt="Tyler Lacroix" class="h-7 w-auto object-contain" />
+        {generalSettings.logo ? (
+          <img src={generalSettings.logo} alt="Tyler Lacroix" class="h-7 w-auto object-contain" />
         ) : (
           <span class="text-sm font-semibold tracking-[0.25em] uppercase text-stone-950 group-hover:text-stone-600 transition-colors">
-            TL
+            {generalSettings.monogram || 'TL'}
           </span>
         )}
       </a>
@@ -42,44 +38,45 @@ const logoPath = '/logo.svg';
       <span class="text-xs uppercase tracking-[0.25em] text-stone-500 font-medium">Visual</span>
     </div>
 
-    <div class="flex items-center gap-6">
-      <a href="/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
-        Overview
-      </a>
-      <a href="/music/" class="text-xs uppercase tracking-widest text-stone-400 hover:text-stone-900 transition-colors">
-        Audio &rarr;
-      </a>
+    <div class="flex items-center gap-6 text-xs uppercase tracking-widest text-stone-400">
+      <a href="/music/" class="hover:text-stone-900 transition-colors">Audio</a>
+      <a href="/about/" class="hover:text-stone-900 transition-colors">About</a>
     </div>
   </header>
 
-  <!-- Optional Intro Text Block -->
+  <!-- Intro Text Block (CMS Powered) -->
   <section class="max-w-5xl mx-auto px-6 sm:px-10 pt-12 pb-6">
     <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-stone-950 mb-4">
-      Selected Visual Works
+      {generalSettings.visualHeadline}
     </h1>
     <p class="text-stone-600 font-light max-w-2xl text-base sm:text-lg leading-relaxed">
-      Direction, editorial shoots, and camera composition. Exploring contrast, depth, and deliberate stillness.
+      {generalSettings.visualSubtext}
     </p>
   </section>
 
-  <!-- Works Grid -->
+  <!-- Gallery Grid -->
   <main class="max-w-7xl mx-auto px-6 sm:px-10 py-8">
     {renderedWorks.length === 0 ? (
       <div class="py-24 text-center">
         <p class="text-stone-400 font-light text-sm uppercase tracking-widest">No visual entries published yet</p>
       </div>
     ) : (
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {renderedWorks.map(({ data, Content }) => (
-          <article class="group flex flex-col bg-white p-4 border border-stone-200/80 rounded-xs shadow-xs hover:shadow-md transition-shadow">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {renderedWorks.map(({ data, id, Content }) => (
+          <article 
+            class="group cursor-pointer flex flex-col bg-white p-4 border border-stone-200/80 rounded-xs shadow-xs hover:shadow-md transition-all"
+            onclick={`document.getElementById('modal-${id}').showModal()`}
+          >
             <div class="aspect-4/3 bg-stone-100 overflow-hidden relative mb-4">
               <img 
                 src={data.coverImage} 
                 alt={data.title}
-                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                 loading="lazy"
-                onerror="this.style.display='none'"
               />
+              <div class="absolute inset-0 bg-stone-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <span class="text-[11px] uppercase tracking-widest bg-stone-950/80 text-white px-3 py-1 rounded-xs">View</span>
+              </div>
             </div>
             
             <div class="flex justify-between items-baseline text-xs text-stone-400 uppercase tracking-wider mb-1.5">
@@ -87,20 +84,65 @@ const logoPath = '/logo.svg';
               <span>{data.year}</span>
             </div>
 
-            <h2 class="text-xl font-normal text-stone-950 mb-1">
+            <h2 class="text-xl font-normal text-stone-950 mb-1 group-hover:text-stone-600 transition-colors">
               {data.title}
             </h2>
 
             {data.client && (
-              <p class="text-xs uppercase tracking-wider text-stone-400 font-mono mb-3">
-                Client: {data.client}
+              <p class="text-xs uppercase tracking-wider text-stone-400 font-mono">
+                {data.client}
               </p>
             )}
 
-            <!-- Post Description / Markdown Body -->
-            <div class="mt-2 text-sm text-stone-600 font-light leading-relaxed prose prose-stone prose-sm">
-              <Content />
-            </div>
+            <!-- Native Accessible Lightbox Dialog -->
+            <dialog 
+              id={`modal-${id}`} 
+              class="m-auto p-0 rounded-xs backdrop:bg-stone-950/85 bg-white text-stone-900 max-w-4xl w-[94vw] max-h-[90vh] overflow-y-auto shadow-2xl border border-stone-300"
+              onclick="if (event.target === this) this.close()"
+            >
+              <div class="p-6 sm:p-10 relative">
+                <button 
+                  type="button"
+                  class="absolute top-6 right-6 text-stone-400 hover:text-stone-950 text-2xl font-light leading-none cursor-pointer p-2"
+                  onclick={`document.getElementById('modal-${id}').close()`}
+                >
+                  &times;
+                </button>
+
+                <!-- Media Preview -->
+                <div class="bg-stone-950/5 flex items-center justify-center mb-6 overflow-hidden max-h-[60vh]">
+                  {data.videoUrl ? (
+                    <video controls class="max-h-[60vh] w-auto mx-auto" poster={data.coverImage}>
+                      <source src={data.videoUrl} type="video/mp4" />
+                    </video>
+                  ) : (
+                    <img 
+                      src={data.coverImage} 
+                      alt={data.title} 
+                      class="max-h-[60vh] w-auto mx-auto object-contain"
+                    />
+                  )}
+                </div>
+
+                <!-- Post Details Underneath -->
+                <div class="border-t border-stone-200 pt-6">
+                  <div class="flex flex-wrap justify-between items-baseline gap-2 mb-2">
+                    <h3 class="text-2xl sm:text-3xl font-light text-stone-950">{data.title}</h3>
+                    <span class="text-xs font-mono uppercase tracking-widest text-stone-400">{data.category} &bull; {data.year}</span>
+                  </div>
+
+                  {data.client && (
+                    <p class="text-xs uppercase tracking-wider text-stone-400 font-mono mb-4">
+                      Client / Project: {data.client}
+                    </p>
+                  )}
+
+                  <div class="mt-4 text-sm text-stone-700 font-light leading-relaxed prose prose-stone max-w-none">
+                    <Content />
+                  </div>
+                </div>
+              </div>
+            </dialog>
           </article>
         ))}
       </div>

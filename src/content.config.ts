@@ -1,5 +1,5 @@
 import { defineCollection, z } from 'astro:content';
-import { glob } from 'astro/loaders';
+import { glob, file } from 'astro/loaders';
 
 const visual = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/visual' }),
@@ -8,6 +8,7 @@ const visual = defineCollection({
     category: z.string().default('Photography'),
     year: z.number().default(2026),
     coverImage: z.string().default('/uploads/placeholder.jpg'),
+    videoUrl: z.string().optional(),
     client: z.string().optional(),
     featured: z.boolean().default(false),
   }),

@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import generalSettings from '../content/settings/general.json';
 import '../styles/global.css';
 
 const releases = await getCollection('music');
@@ -10,9 +11,6 @@ const renderedReleases = await Promise.all(
     return { ...item, Content };
   })
 );
-
-const hasImageLogo = false;
-const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -24,15 +22,15 @@ const logoPath = '/logo.svg';
 </head>
 <body class="bg-stone-950 text-stone-100 min-h-screen font-sans selection:bg-stone-700">
 
-  <!-- Navigation / Brand Bar -->
-  <header class="p-6 sm:p-10 border-b border-stone-900 flex justify-between items-center sticky top-0 bg-stone-950/90 backdrop-blur-md z-20">
+  <!-- Header -->
+  <header class="p-6 sm:p-10 border-b border-stone-900 flex justify-between items-center sticky top-0 bg-stone-950/95 backdrop-blur-md z-20">
     <div class="flex items-center gap-4">
       <a href="/" class="flex items-center gap-3 group">
-        {hasImageLogo ? (
-          <img src={logoPath} alt="Tyler Lacroix" class="h-7 w-auto object-contain filter invert" />
+        {generalSettings.logo ? (
+          <img src={generalSettings.logo} alt="Tyler Lacroix" class="h-7 w-auto object-contain filter invert" />
         ) : (
           <span class="text-sm font-semibold tracking-[0.25em] uppercase text-stone-200 group-hover:text-stone-400 transition-colors">
-            TL
+            {generalSettings.monogram || 'TL'}
           </span>
         )}
       </a>
@@ -40,27 +38,23 @@ const logoPath = '/logo.svg';
       <span class="text-xs uppercase tracking-[0.25em] text-stone-400 font-medium">Audio</span>
     </div>
 
-    <div class="flex items-center gap-6">
-      <a href="/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-200 transition-colors">
-        Overview
-      </a>
-      <a href="/visual/" class="text-xs uppercase tracking-widest text-stone-500 hover:text-stone-200 transition-colors">
-        Visual &rarr;
-      </a>
+    <div class="flex items-center gap-6 text-xs uppercase tracking-widest text-stone-400">
+      <a href="/visual/" class="hover:text-white transition-colors">Visual</a>
+      <a href="/about/" class="hover:text-white transition-colors">About</a>
     </div>
   </header>
 
-  <!-- Intro Block At Top -->
+  <!-- CMS Intro Block -->
   <section class="max-w-5xl mx-auto px-6 sm:px-10 pt-12 pb-8">
     <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-white mb-4">
-      Guitar &amp; Sonic Works
+      {generalSettings.audioHeadline}
     </h1>
     <p class="text-stone-400 font-light max-w-2xl text-base sm:text-lg leading-relaxed">
-      Tone design, live takes, rhythm architecture, and heavy groove sessions. Exploring dynamic shifts from atmospheric ambient passages to drop-tuned weight.
+      {generalSettings.audioSubtext}
     </p>
   </section>
 
-  <!-- Track Listing & Player Layout -->
+  <!-- Tracks -->
   <main class="max-w-5xl mx-auto px-6 sm:px-10 pb-16">
     {renderedReleases.length === 0 ? (
       <div class="py-24 text-center">
@@ -73,13 +67,12 @@ const logoPath = '/logo.svg';
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div class="flex items-center gap-5">
                 {data.coverImage && (
-                  <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden border border-stone-800">
+                  <div class="w-16 h-16 sm:w-20 sm:h-20 bg-stone-900 shrink-0 overflow-hidden rounded-xs border border-stone-800">
                     <img 
                       src={data.coverImage} 
                       alt={data.title}
                       class="w-full h-full object-cover"
                       loading="lazy"
-                      onerror="this.style.display='none'"
                     />
                   </div>
                 )}
@@ -100,23 +93,16 @@ const logoPath = '/logo.svg';
                 </div>
               </div>
 
-              <!-- Inline Audio Player -->
               {data.audioUrl && (
                 <div class="w-full sm:w-72 mt-2 sm:mt-0">
-                  <audio 
-                    controls 
-                    preload="none" 
-                    class="w-full h-8 brightness-90 contrast-125 accent-stone-400"
-                  >
+                  <audio controls preload="none" class="w-full h-8 brightness-90 contrast-125 accent-stone-400">
                     <source src={data.audioUrl} type="audio/mpeg" />
-                    Your browser does not support audio playback.
                   </audio>
                 </div>
               )}
             </div>
 
-            <!-- Track Description / Markdown Notes -->
-            <div class="text-sm text-stone-400 font-light leading-relaxed max-w-2xl pl-0 sm:pl-25">
+            <div class="text-sm text-stone-400 font-light leading-relaxed max-w-2xl">
               <Content />
             </div>
           </article>
