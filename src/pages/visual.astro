@@ -44,7 +44,7 @@ const renderedWorks = await Promise.all(
     </div>
   </header>
 
-  <!-- Intro Text Block (CMS Powered) -->
+  <!-- Intro Text Block -->
   <section class="max-w-5xl mx-auto px-6 sm:px-10 pt-12 pb-6">
     <h1 class="text-3xl sm:text-5xl font-light tracking-tight text-stone-950 mb-4">
       {generalSettings.visualHeadline}
@@ -62,7 +62,7 @@ const renderedWorks = await Promise.all(
       </div>
     ) : (
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {renderedWorks.map(({ data, id, Content }) => (
+        {renderedWorks.map(({ data, id }) => (
           <article 
             class="group cursor-pointer flex flex-col bg-white p-4 border border-stone-200/80 rounded-xs shadow-xs hover:shadow-md transition-all"
             onclick={`document.getElementById('modal-${id}').showModal()`}
@@ -93,61 +93,79 @@ const renderedWorks = await Promise.all(
                 {data.client}
               </p>
             )}
-
-            <!-- Native Accessible Lightbox Dialog -->
-            <dialog 
-              id={`modal-${id}`} 
-              class="m-auto p-0 rounded-xs backdrop:bg-stone-950/85 bg-white text-stone-900 max-w-4xl w-[94vw] max-h-[90vh] overflow-y-auto shadow-2xl border border-stone-300"
-              onclick="if (event.target === this) this.close()"
-            >
-              <div class="p-6 sm:p-10 relative">
-                <button 
-                  type="button"
-                  class="absolute top-6 right-6 text-stone-400 hover:text-stone-950 text-2xl font-light leading-none cursor-pointer p-2"
-                  onclick={`document.getElementById('modal-${id}').close()`}
-                >
-                  &times;
-                </button>
-
-                <!-- Media Preview -->
-                <div class="bg-stone-950/5 flex items-center justify-center mb-6 overflow-hidden max-h-[60vh]">
-                  {data.videoUrl ? (
-                    <video controls class="max-h-[60vh] w-auto mx-auto" poster={data.coverImage}>
-                      <source src={data.videoUrl} type="video/mp4" />
-                    </video>
-                  ) : (
-                    <img 
-                      src={data.coverImage} 
-                      alt={data.title} 
-                      class="max-h-[60vh] w-auto mx-auto object-contain"
-                    />
-                  )}
-                </div>
-
-                <!-- Post Details Underneath -->
-                <div class="border-t border-stone-200 pt-6">
-                  <div class="flex flex-wrap justify-between items-baseline gap-2 mb-2">
-                    <h3 class="text-2xl sm:text-3xl font-light text-stone-950">{data.title}</h3>
-                    <span class="text-xs font-mono uppercase tracking-widest text-stone-400">{data.category} &bull; {data.year}</span>
-                  </div>
-
-                  {data.client && (
-                    <p class="text-xs uppercase tracking-wider text-stone-400 font-mono mb-4">
-                      Client / Project: {data.client}
-                    </p>
-                  )}
-
-                  <div class="mt-4 text-sm text-stone-700 font-light leading-relaxed prose prose-stone max-w-none">
-                    <Content />
-                  </div>
-                </div>
-              </div>
-            </dialog>
           </article>
         ))}
       </div>
     )}
   </main>
+
+  <!-- Lightbox Modals (Placed cleanly outside the grid so no event bubbling interferes) -->
+  {renderedWorks.map(({ data, id, Content }) => (
+    <dialog 
+      id={`modal-${id}`} 
+      class="m-auto p-0 rounded-xs backdrop:bg-stone-950/80 bg-white text-stone-900 max-w-4xl w-[92vw] max-h-[90vh] overflow-y-auto shadow-2xl border border-stone-300"
+    >
+      <div class="p-6 sm:p-10 relative">
+        <button 
+          type="button"
+          class="absolute top-4 right-4 text-stone-400 hover:text-stone-950 text-3xl font-light leading-none cursor-pointer p-2 z-10"
+          onclick={`document.getElementById('modal-${id}').close()`}
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <div class="bg-stone-950/5 flex items-center justify-center mb-6 overflow-hidden max-h-[60vh] rounded-xs">
+          {data.videoUrl ? (
+            <video controls class="max-h-[60vh] w-auto mx-auto" poster={data.coverImage}>
+              <source src={data.videoUrl} type="video/mp4" />
+            </video>
+          ) : (
+            <img 
+              src={data.coverImage} 
+              alt={data.title} 
+              class="max-h-[60vh] w-auto mx-auto object-contain"
+            />
+          )}
+        </div>
+
+        <div class="border-t border-stone-200 pt-6">
+          <div class="flex flex-wrap justify-between items-baseline gap-2 mb-2">
+            <h3 class="text-2xl sm:text-3xl font-light text-stone-950">{data.title}</h3>
+            <span class="text-xs font-mono uppercase tracking-widest text-stone-400">{data.category} &bull; {data.year}</span>
+          </div>
+
+          {data.client && (
+            <p class="text-xs uppercase tracking-wider text-stone-400 font-mono mb-4">
+              Client / Project: {data.client}
+            </p>
+          )}
+
+          <div class="mt-4 text-sm text-stone-700 font-light leading-relaxed prose prose-stone max-w-none">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </dialog>
+  ))}
+
+  <script>
+    // Enable click-outside-to-close on all dialogs
+    document.querySelectorAll('dialog').forEach((dialog) => {
+      dialog.addEventListener('click', (event) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= event.clientY &&
+          event.clientY <= rect.top + rect.height &&
+          rect.left <= event.clientX &&
+          event.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) {
+          dialog.close();
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>

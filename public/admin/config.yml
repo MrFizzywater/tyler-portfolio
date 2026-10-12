@@ -20,7 +20,7 @@ collections:
       - { label: "Category", name: "category", widget: "select", options: ["Photography", "Video", "Direction", "Design"], default: "Photography" }
       - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
       - { label: "Cover Media", name: "coverImage", widget: "image" }
-      - { label: "Video URL (Optional embed/mp4)", name: "videoUrl", widget: "string", required: false }
+      - { label: "Video URL (Optional)", name: "videoUrl", widget: "string", required: false }
       - { label: "Client", name: "client", widget: "string", required: false }
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
       - { label: "Body / Details", name: "body", widget: "markdown" }
@@ -42,15 +42,17 @@ collections:
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
       - { label: "Liner Notes / Description", name: "body", widget: "markdown" }
 
-  # 3. Pages & Global Settings (CMS-managed text & logo)
+  # 3. Settings Collection
   - name: "settings"
-    label: "Site Settings & Content"
+    label: "Site Settings"
+    delete: false
     files:
       - name: "general"
-        label: "General & Branding"
+        label: "Branding & Headlines"
         file: "src/content/settings/general.json"
+        format: "json"
         fields:
-          - { label: "Site Monogram (Fallback)", name: "monogram", widget: "string", default: "TL" }
+          - { label: "Monogram Fallback", name: "monogram", widget: "string", default: "TL" }
           - { label: "Logo Image", name: "logo", widget: "image", required: false }
           - { label: "Visual Page Headline", name: "visualHeadline", widget: "string", default: "Selected Visual Works" }
           - { label: "Visual Page Subtext", name: "visualSubtext", widget: "text" }
@@ -58,14 +60,15 @@ collections:
           - { label: "Audio Page Subtext", name: "audioSubtext", widget: "text" }
 
       - name: "about"
-        label: "About & Contact Page"
+        label: "About & Contact Info"
         file: "src/content/settings/about.json"
+        format: "json"
         fields:
-          - { label: "Name / Heading", name: "headline", widget: "string", default: "Tyler Lacroix" }
+          - { label: "Headline", name: "headline", widget: "string", default: "Tyler Lacroix" }
           - { label: "Tagline", name: "tagline", widget: "string", default: "Visual Artist & Guitarist" }
           - { label: "Profile Photo", name: "photo", widget: "image", required: false }
-          - { label: "Bio / About Text", name: "bio", widget: "markdown" }
+          - { label: "Bio / Details", name: "bio", widget: "markdown" }
           - { label: "Email Address", name: "email", widget: "string" }
-          - { label: "Instagram Handle or URL", name: "instagram", widget: "string", required: false }
-          - { label: "YouTube / Video URL", name: "youtube", widget: "string", required: false }
-          - { label: "Bandcamp / Spotify URL", name: "bandcamp", widget: "string", required: false }
+          - { label: "Instagram Link", name: "instagram", widget: "string", required: false }
+          - { label: "YouTube Link", name: "youtube", widget: "string", required: false }
+          - { label: "Bandcamp / Music Link", name: "bandcamp", widget: "string", required: false }
