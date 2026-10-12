@@ -18,7 +18,7 @@ const music = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: 'src/content/music' }),
   schema: z.object({
     title: z.string(),
-    project: z.string().default('Kronis'),
+    project: z.string().default('ASPIRA'),
     role: z.string().default('Guitar'),
     year: z.number().default(2026),
     coverImage: z.string().default('/uploads/placeholder.jpg'),

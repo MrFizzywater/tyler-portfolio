@@ -1,6 +1,6 @@
 ---
 title: "Demo Cut"
-project: "Kronis"
+project: "ASPIRA"
 role: "Guitar"
 year: 2026
 coverImage: "/uploads/placeholder-audio.jpg"

@@ -9,7 +9,6 @@ media_folder: "public/uploads"
 public_folder: "/uploads"
 
 collections:
-  # 1. Visual Works
   - name: "visual"
     label: "Visual Works"
     folder: "src/content/visual"
@@ -25,7 +24,6 @@ collections:
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
       - { label: "Body / Details", name: "body", widget: "markdown" }
 
-  # 2. Audio Works
   - name: "music"
     label: "Audio & Music"
     folder: "src/content/music"
@@ -33,8 +31,8 @@ collections:
     slug: "{{slug}}"
     fields:
       - { label: "Track / Release Title", name: "title", widget: "string" }
-      - { label: "Project / Band", name: "project", widget: "string", default: "Kronis" }
-      - { label: "Role", name: "role", widget: "string", default: "Guitar" }
+      - { label: "Project / Artist", name: "project", widget: "string", default: "ASPIRA" }
+      - { label: "Role", name: "role", widget: "string", default: "Guitar / Production" }
       - { label: "Release Type", name: "releaseType", widget: "select", options: ["Single", "EP", "Album", "Riff / Demo", "Session"], default: "Single" }
       - { label: "Year", name: "year", widget: "number", value_type: "int", default: 2026 }
       - { label: "Artwork", name: "coverImage", widget: "image" }
@@ -42,7 +40,6 @@ collections:
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
       - { label: "Liner Notes / Description", name: "body", widget: "markdown" }
 
-  # 3. Settings Collection
   - name: "settings"
     label: "Site Settings"
     delete: false

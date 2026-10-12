@@ -1,9 +1,6 @@
 ---
+import generalSettings from '../content/settings/general.json';
 import '../styles/global.css';
-
-// Set to true if Tyler has a logo placed at /public/logo.svg or /public/logo.png
-const hasImageLogo = false;
-const logoPath = '/logo.svg';
 ---
 
 <!DOCTYPE html>
@@ -11,70 +8,87 @@ const logoPath = '/logo.svg';
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tyler Lacroix — Visual & Sound</title>
+  <title>Tyler Lacroix</title>
 </head>
-<body class="min-h-screen flex flex-col md:flex-row overflow-x-hidden font-sans relative selection:bg-stone-300">
+<body class="bg-stone-950 text-white min-h-screen overflow-x-hidden font-sans selection:bg-stone-800">
 
-  <!-- Logo Anchor (Desktop Center) -->
-  <div class="hidden md:flex absolute top-8 left-1/2 -translate-x-1/2 z-30 pointer-events-none items-center justify-center">
-    {hasImageLogo ? (
-      <img src={logoPath} alt="Tyler Lacroix" class="h-10 w-auto object-contain filter invert mix-blend-difference" />
-    ) : (
-      <span class="text-xs uppercase tracking-[0.4em] font-light mix-blend-difference text-white">
-        TL
-      </span>
-    )}
-  </div>
+  <!-- Centered Logo / Branding Header -->
+  <header class="absolute top-0 left-0 right-0 z-30 flex justify-center items-center py-8 pointer-events-none">
+    <a href="/" class="pointer-events-auto flex flex-col items-center group transition-transform duration-300 hover:scale-105">
+      {generalSettings.logo ? (
+        <img 
+          src={generalSettings.logo} 
+          alt="Tyler Lacroix" 
+          class="h-10 sm:h-12 w-auto object-contain filter drop-shadow-md"
+        />
+      ) : (
+        <span class="text-xl sm:text-2xl font-light tracking-[0.35em] uppercase text-white/90 group-hover:text-white transition-colors">
+          {generalSettings.monogram || 'TL'}
+        </span>
+      )}
+    </a>
+  </header>
 
-  <!-- VISUAL SIDE (LIGHT) -->
-  <a 
-    href="/visual/" 
-    class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-[#faf9f6] text-stone-900 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] border-b md:border-b-0 md:border-r border-stone-200 cursor-pointer z-10 block"
-  >
-    <div class="flex justify-between items-center w-full">
-      <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-400">01 / Visual</span>
-      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 group-hover:text-stone-900 transition-all">Explore &rarr;</span>
-    </div>
+  <!-- Split Screen Layout -->
+  <main class="grid grid-cols-1 md:grid-cols-2 min-h-screen">
     
-    <div class="my-auto py-12">
-      <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-stone-950">
-        Photography<br />&amp; Video
-      </h2>
-      <p class="mt-4 text-sm text-stone-500 max-w-sm font-light leading-relaxed">
-        Frame composition, lighting, and movement. Direction and visual storytelling.
-      </p>
-    </div>
+    <!-- Left: Visual Column -->
+    <a 
+      href="/visual/" 
+      class="group relative flex flex-col justify-end p-8 sm:p-16 min-h-[50vh] md:min-h-screen bg-[#faf9f6] text-stone-950 transition-all duration-700 ease-out hover:brightness-105 overflow-hidden"
+    >
+      <div class="absolute inset-0 bg-stone-200/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+      
+      <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+        <span class="text-xs uppercase tracking-[0.35em] text-stone-400 block mb-3 font-medium">
+          Portfolio &bull; Direction
+        </span>
+        <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-stone-950">
+          Visual
+        </h2>
+        <p class="text-stone-500 font-light mt-3 text-sm sm:text-base max-w-sm">
+          Photography, visual framing, and film production.
+        </p>
+        <span class="inline-block mt-6 text-xs uppercase tracking-[0.25em] text-stone-950 border-b border-stone-950 pb-0.5">
+          Enter Gallery &rarr;
+        </span>
+      </div>
+    </a>
 
-    <div class="flex justify-between items-center text-[11px] uppercase tracking-widest text-stone-400">
-      <span>Portfolio &amp; Projects</span>
-      <span class="text-stone-300 font-mono text-xs">Light</span>
-    </div>
-  </a>
+    <!-- Right: Audio / ASPIRA Column -->
+    <a 
+      href="/music/" 
+      class="group relative flex flex-col justify-end p-8 sm:p-16 min-h-[50vh] md:min-h-screen bg-stone-950 text-white transition-all duration-700 ease-out hover:brightness-125 overflow-hidden border-t md:border-t-0 md:border-l border-stone-800"
+    >
+      <div class="absolute inset-0 bg-stone-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-  <!-- SOUND SIDE (DARK) -->
-  <a 
-    href="/music/" 
-    class="group relative flex-1 min-h-[50vh] md:min-h-screen bg-stone-950 text-stone-100 flex flex-col justify-between p-8 sm:p-14 transition-all duration-500 hover:flex-[1.15] cursor-pointer z-10 block"
-  >
-    <div class="flex justify-between items-center w-full">
-      <span class="text-xs uppercase tracking-[0.3em] font-medium text-stone-500">02 / Auditory</span>
-      <span class="text-xs uppercase tracking-widest text-stone-400 group-hover:translate-x-1 group-hover:text-white transition-all">Listen &rarr;</span>
-    </div>
-    
-    <div class="my-auto py-12">
-      <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-white">
-        Guitar<br />&amp; Sound
-      </h2>
-      <p class="mt-4 text-sm text-stone-400 max-w-sm font-light leading-relaxed">
-        Riffs, tracking, and tone architecture. Heavy groove, dynamics, and atmospheric textures.
-      </p>
-    </div>
+      <div class="relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+        <span class="text-xs uppercase tracking-[0.35em] text-stone-500 block mb-3 font-medium">
+          ASPIRA &bull; Tone Design
+        </span>
+        <h2 class="text-4xl sm:text-6xl font-light tracking-tight text-white">
+          Audio
+        </h2>
+        <p class="text-stone-400 font-light mt-3 text-sm sm:text-base max-w-sm">
+          Guitar work, groove architecture, and sound design.
+        </p>
+        <span class="inline-block mt-6 text-xs uppercase tracking-[0.25em] text-stone-200 border-b border-stone-200 pb-0.5">
+          Listen &rarr;
+        </span>
+      </div>
+    </a>
 
-    <div class="flex justify-between items-center text-[11px] uppercase tracking-widest text-stone-500">
-      <span>Releases &amp; Sessions</span>
-      <span class="text-stone-700 font-mono text-xs">Dark</span>
-    </div>
-  </a>
+  </main>
+
+  <!-- Bottom Centered About & Contact Bar -->
+  <footer class="absolute bottom-0 left-0 right-0 z-30 flex justify-center items-center py-6 pointer-events-none">
+    <a 
+      href="/about/" 
+      class="pointer-events-auto text-xs uppercase tracking-[0.25em] text-stone-400 hover:text-white bg-stone-900/80 backdrop-blur-md px-5 py-2.5 rounded-full border border-stone-800 hover:border-stone-600 transition-all shadow-lg"
+    >
+      About &amp; Contact
+    </a>
+  </footer>
 
 </body>
 </html>
